@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Dog API Gallery</title>
+  <style>
+ 
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: rgb(255, 255, 255);
+      font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman',Times;
+    }
+   
+    nav {
+      background-color: black;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      font-size: 24px;
+      font-weight: bold;
+    }
+  
+  
+  .sidebar {
+  height: 100%;
+  width: 160px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #000000;
+  overflow-x: hidden;
+  padding-top: 16px;
+}
+
+
+.sidebar button {
+    padding: 12px 20px; 
+    text-decoration: none; 
+    font-size: 18px; 
+    color: #818181; 
+    display: block; 
+    background-color: #000000; 
+    border-radius: 8px; 
+    margin: 8px 0; 
+    transition: all 0.3s ease; 
+    border: 2px solid transparent; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+}
+
+
+.sidebar button:hover {
+  color: #f1f1f1;
+}
+
+
+.main {
+  margin-left: 160px; 
+  padding: 0px 10px;
+}
+
+
+    .gallery {
+      display: absolute;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      grid-gap: 10px;
+      padding: 10px;
+    }
+    .gallery img {
+      width: 100%;
+      height: auto;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    DOG API Gallery
+  </nav>
+
+ 
+  <div class="sidebar">
+    <button onclick="fetchBreedImages('affenpinscher')">Affenpinscher</button>
+    <button onclick="fetchBreedImages('african')">African</button>
+    <button onclick="fetchBreedImages('airedale')">Airedale</button>
+    <button onclick="fetchBreedImages('akita')">Akita</button>
+    <button onclick="fetchBreedImages('appenzeller')">Appenzeller</button>
+    <button onclick="fetchBreedImages('basenji')">Basenji</button>
+    <button onclick="fetchBreedImages('beagle')">Beagle</button>
+    <button onclick="fetchBreedImages('bluetick')">Bluetick</button>
+    <button onclick="fetchBreedImages('borzoi')">Borzoi</button>
+    <button onclick="fetchBreedImages('bouvier')">Bouvier</button>
+    </select>
+  </div>
+
+ 
+  <div class="gallery" id="gallery">
+  </div>
+
+  <script>
+    async function fetchBreedImages(breed) {
+      const url = `https://dog.ceo/api/breed/${breed}/images`;
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+        if(data.status === "success") {
+          
+          const images = data.message.slice(0, 20);
+          displayImages(images);
+        } else {
+          alert("Error fetching images for this breed.");
+        }
+      } catch (error) {
+        console.error(error);
+        alert("Error fetching images.");
+      }
+    }
+
+    
+    function displayImages(images) {
+      const gallery = document.getElementById("gallery");
+      gallery.innerHTML = ""; 
+      images.forEach(src => {
+        const img = document.createElement("img");
+        img.src = src;
+        img.alt = "Dog image";
+        gallery.appendChild(img);
+      });
+    }
+  </script>
+</body>
+</html>
